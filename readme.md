@@ -24,7 +24,9 @@
 
 ### WIReview
 - Description: This repository contains a demo of CW work item details page using AI to collect information and generate a summary review report. Most code is written by DeepSeek (backend) and v0 (frontend).
-- Video: [Watch the demo video](WIReview/demo.mkv)
+
+https://github.com/Eden-dot-Ye/AIDemo/blob/main/WIReview/demo.mkv
+
 - Technical Details:
   - Python flask for web server and pyodbc for database connection & query.
   - FastMCP and DeepSeek for AI MCP integration.
