@@ -204,3 +204,6 @@ __marimo__/
 
 # Exclude model
 .safetensors
+
+# Exclude video
+*.mkv
