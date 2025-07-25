@@ -1,0 +1,31 @@
+In addition for WI00798717 - The EDS & EDC portals needs to be hidden there was a recent change on 8/14, from the Glow team that breaks the functionalities of EDS/EDC(if you click the download links and login to the portals, you will always see the request is forbidden), I've checked with them, and the fix will be included in this WI otherwise we can't do function review. Just a reminder in case some related incidents come to us.
+
+Hey Craig,
+For me:
+WI00798717 - The EDS & EDC portals needs to be hidden  - coding work is completed, waiting for SH0.
+We will take two steps to get rid of EDS/EDC, 
+1st is to support both alias feature and EDS/EDC portals. 
+2nd is to delete EDS/EDC portals after a while.
+So once the clients update, the old links can still work(we have no chance to update the old links as they were sent out via Emails).
+WI00767207 - Contact Web Portal Scheduled Report Visibility - coding. The scheduled report list part is completed, currently, I'm working on showing/editing a scheduled report.
+I think nothing needed from myside for now.
+
+Do we have a follow-up plan for this issue?
+Are we going to prevent manually delivering a report by 'E' or allow 'E' to schedule a report?
+I'm asking because we have the same issue on the glow report, 
+we support background delivery on the Glow report as well.
+And the user will encounter the same error. 
+
+we've received the notification too, we are required to attend offline, tomorrow at 9:30 AM UTC+8, I've never seen such a serious notification before
+
+Given a nullable DateTime field, e.g. Z0_Date
+When using ZQuery for querying, I noticed that if ZDateTime.Empty is used (var query = new ZQuery(DummyBizoSchema.Z0_Date, ZDateTime.Empty);), the generated SQL during the query is Z0_Date is null.
+However, if the number of retrieved records is greater than or equal to MaximumRowsBeforeUsingIndex,
+it will filter values where Z0_Date == DateTime.MinValue, resulting in no records being returned.
+This can be reproduced by this UT.
+
+Just a reminder, running IMS will delete your emails in your Inbox, be careful
+
+need to raise an incident like this CS01713832 - WISGLOSYD - Request to join the WTG Github Organization and they will send you an invite email to join WTG GitHub. Then follow the Join organization section in Github Copilot Guide - Overview
+
+Seems some DAT errors for check-in that are not related to the changes, it just asked me to re-submit CH0 again. It iterated and automatically generated the task of my previous CDF task which is called Tiny Change

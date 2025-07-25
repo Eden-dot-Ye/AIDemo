@@ -1,0 +1,230 @@
+<div class="p-3">
+    <!-- Filter Section -->
+    <div class="filter-section mb-3">
+        <h6>Filter</h6>
+        <div class="row">
+            <div class="col-md-2">
+                <label for="filterType" class="form-label">Type</label>
+                <select class="form-select form-select-sm" id="filterType">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="filterStatus" class="form-label">Status</label>
+                <select class="form-select form-select-sm" id="filterStatus">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="filterStaff" class="form-label">Staff</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select" id="filterStaff">
+                        <option value="">All</option>
+                    </select>
+                    <button class="btn btn-outline-secondary" type="button">...</button>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="filterGroup" class="form-label">Group</label>
+                <div class="input-group input-group-sm">
+                    <select class="form-select" id="filterGroup">
+                        <option value="">All</option>
+                    </select>
+                    <button class="btn btn-outline-secondary" type="button">...</button>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn btn-primary btn-sm me-2">Filter</button>
+                <button class="btn btn-secondary btn-sm">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Work Items Table -->
+    <div class="table-container mb-3">
+        <table class="table table-sm table-hover" id="workItemsTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Description</th>
+                    <th>Completion Event</th>
+                    <th>Seq.</th>
+                    <th>Type</th>
+                    <th>Reminder</th>
+                    <th>Status</th>
+                    <th>Staff</th>
+                    <th>Assigned Group</th>
+                    <th>Capability</th>
+                    <th>Low Est.</th>
+                    <th>Factor</th>
+                    <th>High Est</th>
+                    <th>Std Est</th>
+                    <th>Est. to Complete</th>
+                    <th>Completed (Local)</th>
+                    <th>Est. Handover</th>
+                    <th>Estimated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Selected Task Details -->
+    <div class="row">
+        <!-- Task Details Section -->
+        <div class="col-md-6">
+            <div class="details-section">
+                <h6>Details</h6>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Description</label></div>
+                    <div class="col-8"><input type="text" class="form-control form-control-sm" id="taskDescription" readonly></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Type</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="taskType">
+                                <option>INT</option>
+                                <option>CTC</option>
+                                <option>CBR</option>
+                            </select>
+                            <span class="input-group-text" id="taskTypeDescription">Internal Procedure</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Status</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="taskStatusSelect">
+                                <option>CLS</option>
+                                <option>ASN</option>
+                                <option>WRK</option>
+                            </select>
+                            <span class="input-group-text" id="taskStatusDescription">Closed as Completed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Staff</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" id="taskStaff" value="E">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">CargoWise Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Group</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Capability</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div class="col-md-6">
+            <div class="schedule-section">
+                <h6>Schedule</h6>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Low Est. Duration</label></div>
+                    <div class="col-6"><span id="lowEstDuration">:</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Est. Variation Factor</label></div>
+                    <div class="col-6"><span id="estVariationFactor">2.0</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">High Est. Duration</label></div>
+                    <div class="col-6"><span id="highEstDuration">:</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Actual Duration</label></div>
+                    <div class="col-6"><span id="actualDuration">000:01</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"></div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="interruptible">
+                            <label class="form-check-label" for="interruptible">Interruptible</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Workflow</label></div>
+                    <div class="col-6">
+                        <select class="form-select form-select-sm" id="workflow">
+                            <option value="">Select workflow...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Notes Section -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="notes-section">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6>Notes</h6>
+                </div>
+                <div class="mb-2">
+                    <select class="form-select form-select-sm" style="width: 150px; display: inline-block;">
+                        <option>Microsoft Sans Serif</option>
+                    </select>
+                    <select class="form-select form-select-sm ms-2" style="width: 80px; display: inline-block;">
+                        <option>10</option>
+                    </select>
+                    <div class="btn-group ms-2" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-italic"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-underline"></i></button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Popup</button>
+                    <button class="btn btn-primary btn-sm" id="aiReviewBtn" onclick="performAIReview()">
+                        <i class="fas fa-robot me-1"></i>
+                        <i class="fas fa-sparkles me-1"></i>
+                        AI Review
+                    </button>
+                </div>
+                <textarea class="form-control" id="descriptionText" rows="6" placeholder="Test Desc Eden"></textarea>
+                
+                <!-- AI Review Results Section -->
+                <div id="aiReviewResults" class="mt-3" style="display: none;">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h6 class="mb-0"><i class="fas fa-robot me-2"></i>AI Review Results</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="aiReviewContent">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="mt-2">AI is analyzing the work item...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

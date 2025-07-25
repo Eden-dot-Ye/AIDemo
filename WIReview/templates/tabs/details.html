@@ -1,0 +1,181 @@
+<div class="p-3">
+    <!-- Bottom Section - Only Details and Description -->
+    <div class="row">
+        <!-- Details Section -->
+        <div class="col-md-6">
+            <div class="details-section">
+                <h6>Details</h6>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Type</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="detailsType">
+                                <option>TRN</option>
+                                <option>INT</option>
+                                <option>CTC</option>
+                            </select>
+                            <span class="input-group-text">Training (Internal Staff)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Area</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="detailsArea">
+                                <option>WA1</option>
+                                <option>WA2</option>
+                            </select>
+                            <span class="input-group-text">Area 1 for All Work Items</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Activity Type</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="detailsActivityType">
+                                <option>AT2</option>
+                                <option>AT1</option>
+                            </select>
+                            <span class="input-group-text">Activity Type 2 for All Work Areas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Activity Sub Type</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="detailsActivitySubType">
+                                <option>AS1</option>
+                                <option>AS2</option>
+                            </select>
+                            <span class="input-group-text">Activity Subtype 1 for All Activity Types</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Priority</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <select class="form-select" id="detailsPriority">
+                                <option>LOW</option>
+                                <option>MED</option>
+                                <option>HIGH</option>
+                            </select>
+                            <span class="input-group-text">Low Priority</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Department</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Company</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-4"><label class="form-label">Country/Region/Port</label></div>
+                    <div class="col-8">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Task/State Section -->
+        <div class="col-md-6">
+            <div class="schedule-section">
+                <h6>Current Task / State</h6>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Task Status</label></div>
+                    <div class="col-6"><span id="taskStatus">ASN Assigned</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Task Assigned</label></div>
+                    <div class="col-6"><span id="taskAssigned">E CargoWise Support</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Work Item Status</label></div>
+                    <div class="col-6"><span id="workItemStatus">WRK Working</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Created By</label></div>
+                    <div class="col-6">
+                        <div class="input-group input-group-sm">
+                            <span class="form-control">E</span>
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">CargoWise Support</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Created Time</label></div>
+                    <div class="col-6"><span id="createdTime">24-Jul-25 22:05</span></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Defect Introduced in WI</label></div>
+                    <div class="col-6">
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary" type="button">...</button>
+                            <span class="input-group-text">(None Selected)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">Defect Introduced in Task</label></div>
+                    <div class="col-6"><input type="text" class="form-control form-control-sm" id="defectTask"></div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-6"><label class="form-label">First CB that Missed Defect</label></div>
+                    <div class="col-6"><input type="text" class="form-control form-control-sm" id="firstCB"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description Section -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="notes-section">
+                <h6>Description</h6>
+                <div class="mb-2">
+                    <label for="summaryText" class="form-label">Summary</label>
+                    <textarea type="text" class="form-control form-control-sm" id="summaryText" placeholder="Eden Summary">When opening a new Screen in Cargowise</textarea>
+                </div>
+                <div class="mb-2">
+                    <select class="form-select form-select-sm" style="width: 150px; display: inline-block;">
+                        <option>Calibri</option>
+                    </select>
+                    <select class="form-select form-select-sm ms-2" style="width: 80px; display: inline-block;">
+                        <option>10.2</option>
+                    </select>
+                    <div class="btn-group ms-2" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-bold"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-italic"></i></button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary"><i class="fas fa-underline"></i></button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary ms-2">Popup</button>
+                </div>
+                <textarea class="form-control" id="taskNotes" rows="4" placeholder="E 24-Jul-25 22:07 GMT+10:00: Doing investigate It is a defect">EY 02-Jul-25 18:58 GMT+08:00: 
+Reproduction: open a Shippment, maximize the form, then close it, then open it again, you will find that its size becomes the default size (Incident says it is a smaller size, but it is actually the default size)
+Cause: Assuming the current screen resolution is 3440 x 1380. after maximizing the form, the actual size is (-9, -9, 3449, 1389), which exceeds the current local screen size (0, 0, 3440, 1380), resulting in EnterpriseFormLookStrategy.RestoreJustPositionAndSize that the need to restore the formRect is invalid, so the return of the default size
+Solution: Since the logic of maximizing the form will already be in the RestoreFormLayout, and can handle the case where the form exceeds the screen size, I chose to add the check in this case, and the original logic is to let it return to the initial size when restoring, but I think a better way is to avoid recording the wrong size when writing to the cache</textarea>
+            </div>
+        </div>
+    </div>
+</div>

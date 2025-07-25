@@ -1,0 +1,627 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">Details</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="workflow-tab" data-bs-toggle="tab" data-bs-target="#workflow" type="button" role="tab">Workflow & Tracking</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="related-tab" data-bs-toggle="tab" data-bs-target="#related" type="button" role="tab">Related Items</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="conversation-tab" data-bs-toggle="tab" data-bs-target="#conversation" type="button" role="tab">eConversation</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing" type="button" role="tab">Billing</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="docdata-tab" data-bs-toggle="tab" data-bs-target="#docdata" type="button" role="tab">Doc Data</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit" type="button" role="tab">Audit Data</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="edocs-tab" data-bs-toggle="tab" data-bs-target="#edocs" type="button" role="tab">eDocs</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="notes-tab" data-bs-toggle="tab" data-bs-target="#notes" type="button" role="tab">Notes</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="logs-tab" data-bs-toggle="tab" data-bs-target="#logs" type="button" role="tab">Logs</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="mainTabContent">
+            <!-- Details Tab -->
+            <div class="tab-pane fade show active" id="details" role="tabpanel">
+                {% include 'tabs/details.html' %}
+            </div>
+
+            <!-- Workflow & Tracking Tab -->
+            <div class="tab-pane fade" id="workflow" role="tabpanel">
+                {% include 'tabs/workflow.html' %}
+            </div>
+
+            <!-- Related Items Tab -->
+            <div class="tab-pane fade" id="related" role="tabpanel">
+                {% include 'tabs/related.html' %}
+            </div>
+
+            <!-- eConversation Tab -->
+            <div class="tab-pane fade" id="conversation" role="tabpanel">
+                <div class="p-3">
+                    <h5>eConversation</h5>
+                    <p>Conversation history and communications will be displayed here.</p>
+                </div>
+            </div>
+
+            <!-- Billing Tab -->
+            <div class="tab-pane fade" id="billing" role="tabpanel">
+                <div class="p-3">
+                    <h5>Billing Information</h5>
+                    <p>Billing details and cost tracking will be displayed here.</p>
+                </div>
+            </div>
+
+            <!-- Doc Data Tab -->
+            <div class="tab-pane fade" id="docdata" role="tabpanel">
+                <div class="p-3">
+                    <h5>Document Data</h5>
+                    <p>Document metadata and information will be displayed here.</p>
+                </div>
+            </div>
+
+            <!-- Audit Data Tab -->
+            <div class="tab-pane fade" id="audit" role="tabpanel">
+                {% include 'tabs/audit.html' %}
+            </div>
+
+            <!-- eDocs Tab -->
+            <div class="tab-pane fade" id="edocs" role="tabpanel">
+                <div class="p-3">
+                    <h5>Electronic Documents</h5>
+                    <p>Document attachments and files will be displayed here.</p>
+                </div>
+            </div>
+
+            <!-- Notes Tab -->
+            <div class="tab-pane fade" id="notes" role="tabpanel">
+                {% include 'tabs/notes.html' %}
+            </div>
+
+            <!-- Logs Tab -->
+            <div class="tab-pane fade" id="logs" role="tabpanel">
+                <div class="p-3">
+                    <h5>System Logs</h5>
+                    <p>System logs and activity history will be displayed here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    // Load initial data
+    loadWorkItems();
+    loadFilterOptions();
+    
+    // Tab change handlers
+    $('#mainTabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).attr('data-bs-target');
+        const workItemId = $('#selectedWorkItemId').val() || 1;
+        
+        switch(target) {
+            case '#workflow':
+                loadWorkflowData(workItemId);
+                break;
+            case '#related':
+                loadRelatedItems(workItemId);
+                break;
+            case '#audit':
+                loadAuditData(workItemId);
+                break;
+            case '#notes':
+                loadNotesData(workItemId);
+                break;
+        }
+    });
+});
+
+function loadWorkItems() {
+    $.get('/api/work-items', function(response) {
+        if (response.success) {
+            displayWorkItems(response.data);
+        }
+    });
+}
+
+function loadFilterOptions() {
+    $.get('/api/filters', function(response) {
+        if (response.success) {
+            populateFilters(response.data);
+        }
+    });
+}
+
+function displayWorkItems(items) {
+    const tbody = $('#workItemsTable tbody');
+    tbody.empty();
+    
+    items.forEach(function(item, index) {
+        const row = $(`
+            <tr class="work-item-row ${item.description === 'Review' ? 'review' : ''}" data-id="${item.id}">
+                <td>${item.description || ''}</td>
+                <td>${item.completion_event || ''}</td>
+                <td>${item.sequence_number || ''}</td>
+                <td>${item.type || ''}</td>
+                <td><i class="fas fa-circle text-success"></i></td>
+                <td>${item.status || ''}</td>
+                <td>${item.staff || ''}</td>
+                <td>${item.assigned_group || ''}</td>
+                <td>${item.capability || ''}</td>
+                <td>${item.low_estimate || ''}</td>
+                <td>${item.factor || ''}</td>
+                <td>${item.high_estimate || ''}</td>
+                <td>${item.std_estimate || ''}</td>
+                <td>${item.estimated_complete || ''}</td>
+                <td>${item.completed_local || ''}</td>
+                <td>${item.estimated_handover || ''}</td>
+            </tr>
+        `);
+        
+        row.click(function() {
+            $('.work-item-row').removeClass('selected');
+            $(this).addClass('selected');
+            $('#selectedWorkItemId').val(item.id);
+            
+            // Load work item details for the details section
+            loadWorkItemDetails(item.id);
+            
+            // Load work item notes for the notes section
+            loadWorkItemNotesForDetails(item.id);
+        });
+        
+        tbody.append(row);
+    });
+    
+    // Select first item by default
+    if (items.length > 0) {
+        $('#workItemsTable tbody tr:first').click();
+    }
+}
+
+// Add new function to load work item notes for details tab
+function loadWorkItemNotesForDetails(itemId) {
+    $.get(`/api/work-item/${itemId}/notes`, function(response) {
+        if (response.success) {
+            displayWorkItemNotesInDetails(response.data);
+        }
+    });
+}
+
+// Add new function to display notes in the details tab notes section
+function displayWorkItemNotesInDetails(notes) {
+    const textarea = $('#descriptionText');
+    if (notes.length > 0) {
+        // Use the first note or combine notes
+        const noteText = notes[0].note_text || '';
+        textarea.val(noteText);
+    } else {
+        textarea.val('');
+    }
+}
+
+function loadWorkItemDetails(itemId) {
+    $.get(`/api/work-item/${itemId}`, function(response) {
+        if (response.success) {
+            populateDetailsForm(response.data);
+        }
+    });
+}
+
+function loadWorkflowData(itemId) {
+    $.get(`/api/work-item/${itemId}/workflow`, function(response) {
+        if (response.success) {
+            displayWorkflowData(response.data);
+        }
+    });
+}
+
+function loadRelatedItems(itemId) {
+    $.get(`/api/work-item/${itemId}/related`, function(response) {
+        if (response.success) {
+            displayRelatedItems(response.data);
+        }
+    });
+}
+
+function loadAuditData(itemId) {
+    $.get(`/api/work-item/${itemId}/audit`, function(response) {
+        if (response.success) {
+            displayAuditData(response.data);
+        }
+    });
+}
+
+function loadNotesData(itemId) {
+    $.get(`/api/work-item/${itemId}/notes`, function(response) {
+        if (response.success) {
+            displayNotesData(response.data);
+        }
+    });
+}
+
+// Update the populateDetailsForm function to handle all the new fields
+function populateDetailsForm(data) {
+    // Basic work item info
+    $('#summaryText').val(data.summary || 'Eden Summary');
+    $('#descriptionText').val(data.description_text || 'Test Desc Eden');
+    
+    // Details section fields
+    $('#detailsType').val(data.type || 'TRN');
+    $('#detailsArea').val('WA1'); // Default value
+    $('#detailsActivityType').val('AT2'); // Default value
+    $('#detailsActivitySubType').val('AS1'); // Default value
+    $('#detailsPriority').val('LOW'); // Default value
+    
+    // Current Task/State section
+    $('#taskStatus').text(data.status === 'ASN' ? 'ASN Assigned' : 
+                         data.status === 'CLS' ? 'CLS Closed' : 
+                         data.status === 'WRK' ? 'WRK Working' : data.status);
+    $('#taskAssigned').text(`${data.staff || 'E'} CargoWise Support`);
+    $('#workItemStatus').text('WRK Working');
+    $('#createdTime').text(data.created_date ? new Date(data.created_date).toLocaleDateString() : '24-Jul-25 22:05');
+    
+    // Clear task-specific fields
+    $('#defectTask').val('');
+    $('#firstCB').val('');
+}
+
+function populateFilters(filters) {
+    // Populate filter dropdowns
+    const typeSelect = $('#filterType');
+    const statusSelect = $('#filterStatus');
+    const staffSelect = $('#filterStaff');
+    const groupSelect = $('#filterGroup');
+    
+    filters.types?.forEach(type => {
+        typeSelect.append(`<option value="${type}">${type}</option>`);
+    });
+    
+    filters.statuses?.forEach(status => {
+        statusSelect.append(`<option value="${status}">${status}</option>`);
+    });
+    
+    filters.staff?.forEach(staff => {
+        staffSelect.append(`<option value="${staff}">${staff}</option>`);
+    });
+    
+    filters.groups?.forEach(group => {
+        groupSelect.append(`<option value="${group}">${group}</option>`);
+    });
+}
+
+function displayWorkflowData(data) {
+    const tbody = $('#workflowTasksTable tbody');
+    tbody.empty();
+    
+    if (data.length === 0) {
+        tbody.append('<tr><td colspan="17">No workflow data available.</td></tr>');
+        return;
+    }
+    
+    data.forEach(function(item, index) {
+        const row = $(`
+            <tr class="workflow-task-row ${item.task_name === 'Review' ? 'review' : ''}" data-task-id="${item.id}" data-work-item-id="${item.work_item_id}">
+                <td>${item.task_name || ''}</td>
+                <td>${item.completion_event || ''}</td>
+                <td>${index + 1}</td>
+                <td>${item.task_type || ''}</td>
+                <td><i class="fas fa-circle text-success"></i></td>
+                <td>${item.task_status || ''}</td>
+                <td>${item.assigned_to || ''}</td>
+                <td>${item.assigned_group || ''}</td>
+                <td>${item.capability || ''}</td>
+                <td>${item.low_estimate || ''}</td>
+                <td>${item.factor || '2'}</td>
+                <td>${item.high_estimate || ''}</td>
+                <td>${item.std_estimate || ''}</td>
+                <td>${item.estimated_complete || ''}</td>
+                <td>${item.completed_date || ''}</td>
+                <td>${item.estimated_handover || ''}</td>
+                <td>${item.duration || ''}</td>
+            </tr>
+        `);
+        
+        row.click(function() {
+            $('.workflow-task-row').removeClass('selected');
+            $(this).addClass('selected');
+            const taskId = $(this).data('task-id');
+            const workItemId = $(this).data('work-item-id');
+            loadTaskDetails(workItemId, taskId);
+        });
+        
+        tbody.append(row);
+    });
+    
+    // Select first task by default
+    if (data.length > 0) {
+        $('#workflowTasksTable tbody tr:first').click();
+    }
+}
+
+function loadTaskDetails(workItemId, taskId) {
+    // Load task details
+    $.get(`/api/work-item/${workItemId}/task/${taskId}`, function(response) {
+        if (response.success) {
+            populateTaskDetailsForm(response.data);
+        }
+    });
+    
+    // Load task notes
+    $.get(`/api/work-item/${workItemId}/task/${taskId}/notes`, function(response) {
+        if (response.success) {
+            displayTaskNotes(response.data);
+        }
+    });
+}
+
+function populateTaskDetailsForm(data) {
+    $('#taskDescription').val(data.task_name || '');
+    $('#taskType').val(data.task_type || '');
+    $('#taskStatusSelect').val(data.task_status || '');
+    $('#taskStaff').val(data.assigned_to || '');
+    
+    // Schedule section
+    $('#lowEstDuration').text(data.low_est_duration || ':');
+    $('#estVariationFactor').text(data.est_variation_factor || '2.0');
+    $('#highEstDuration').text(data.high_est_duration || ':');
+    $('#actualDuration').text(data.actual_duration || '000:01');
+    $('#interruptible').prop('checked', data.interruptible || false);
+    $('#workflow').val(data.workflow || '');
+    
+    // Update type description based on selection
+    const typeDescriptions = {
+        'INT': 'Internal Procedure',
+        'CTC': 'Coding Task',
+        'CBR': 'Code Review'
+    };
+    $('#taskTypeDescription').text(typeDescriptions[data.task_type] || '');
+    
+    // Update status description based on selection
+    const statusDescriptions = {
+        'CLS': 'Closed as Completed',
+        'ASN': 'Assigned',
+        'WRK': 'Working'
+    };
+    $('#taskStatusDescription').text(statusDescriptions[data.task_status] || '');
+}
+
+function displayTaskNotes(notes) {
+    const textarea = $('#taskNotes');
+    if (notes.length > 0) {
+        // Combine all notes into the textarea
+        const notesText = notes.map(note => 
+            `${note.created_by} ${note.created_date}: ${note.note_text}`
+        ).join('\n\n');
+        textarea.val(notesText);
+    } else {
+        textarea.val('');
+    }
+}
+function displayRelatedItems(data) {
+    const container = $('#relatedContent');
+    container.empty();
+    
+    if (data.length === 0) {
+        container.html('<p>No related items found.</p>');
+        return;
+    }
+    
+    const table = $(`
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Related Item ID</th>
+                    <th>Description</th>
+                    <th>Relationship Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    `);
+    
+    data.forEach(item => {
+        table.find('tbody').append(`
+            <tr>
+                <td>${item.work_item_id || ''}</td>
+                <td>${item.related_description || ''}</td>
+                <td>${item.relationship_type || ''}</td>
+                <td>${item.related_status || ''}</td>
+            </tr>
+        `);
+    });
+    
+    container.append(table);
+}
+
+function displayAuditData(data) {
+    const container = $('#auditContent');
+    container.empty();
+    
+    if (data.length === 0) {
+        container.html('<p>No audit data available.</p>');
+        return;
+    }
+    
+    const table = $(`
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Field</th>
+                    <th>Old Value</th>
+                    <th>New Value</th>
+                    <th>Changed By</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    `);
+    
+    data.forEach(item => {
+        table.find('tbody').append(`
+            <tr>
+                <td>${item.action_type || ''}</td>
+                <td>${item.field_name || ''}</td>
+                <td>${item.old_value || ''}</td>
+                <td>${item.new_value || ''}</td>
+                <td>${item.changed_by || ''}</td>
+                <td>${item.changed_date || ''}</td>
+            </tr>
+        `);
+    });
+    
+    container.append(table);
+}
+
+function displayNotesData(data) {
+    const container = $('#notesContent');
+    container.empty();
+    
+    if (data.length === 0) {
+        container.html('<p>No notes available.</p>');
+        return;
+    }
+    
+    data.forEach(note => {
+        const noteDiv = $(`
+            <div class="card mb-3">
+                <div class="card-header">
+                    <small class="text-muted">By ${note.created_by} on ${note.created_date}</small>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">${note.note_text}</p>
+                </div>
+            </div>
+        `);
+        container.append(noteDiv);
+    });
+}
+
+// Add this function after the existing functions
+
+function performAIReview() {
+    const workItemId = $('#selectedWorkItemId').val();
+    const selectedTaskId = $('.workflow-task-row.selected').data('task-id');
+    
+    if (!workItemId) {
+        alert('Please select a work item first.');
+        return;
+    }
+    
+    // Show the AI Review results section
+    $('#aiReviewResults').show();
+    $('#aiReviewContent').html(`
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">AI is analyzing the work item...</p>
+        </div>
+    `);
+    
+    // Disable the button during processing
+    $('#aiReviewBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Processing...');
+    
+    // Call the AI Review API
+    $.ajax({
+        url: `/api/work-item/${workItemId}/ai-review`,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            task_id: selectedTaskId
+        }),
+        timeout: 60000, // 60 seconds timeout
+        success: function(response) {
+            if (response.success) {
+                displayAIReviewResults(response.data);
+            } else {
+                displayAIReviewError(response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            displayAIReviewError(`Request failed: ${error}`);
+        },
+        complete: function() {
+            // Re-enable the button
+            $('#aiReviewBtn').prop('disabled', false).html('<i class="fas fa-robot me-1"></i><i class="fas fa-sparkles me-1"></i>AI Review');
+        }
+    });
+}
+
+function displayAIReviewResults(data) {
+    const content = `
+        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fas fa-brain me-2"></i>AI Analysis</h5>
+                <div class="bg-light p-3 rounded mb-3" style="max-height: 400px; overflow-y: auto;">
+                    <h6>AI Response Message:</h6>
+                    <pre style="white-space: pre-wrap; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.9em; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #0d6efd;">
+                ${data.ai_analysis.message}</pre>
+                    
+                    <h6>Tool Calls:</h6>
+                    <pre style="white-space: pre-wrap; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.9em; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #fd7e14;">
+                ${JSON.stringify(data.ai_analysis.tool_calls, null, 2)}</pre>
+                    
+                    <h6>Full Conversation:</h6>
+                    <pre style="white-space: pre-wrap; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.9em; background-color: #f8f9fa; padding: 10px; border-radius: 5px; border-left: 3px solid #20c997;">
+                ${JSON.stringify(data.ai_analysis.conversation, null, 2)}</pre>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h6><i class="fas fa-code me-2"></i>Pull Request Core Code</h6>
+                <div class="bg-dark text-light p-3 rounded mb-3" style="max-height: 400px; overflow-y: auto;">
+                    <pre><code class="language-csharp" style="color: #f8f8f2; font-size: 0.85em;">${data.csharp_code}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <small class="text-muted">
+                    <i class="fas fa-clock me-1"></i>Analysis completed at: ${new Date(data.timestamp).toLocaleString()}
+                </small>
+            </div>
+        </div>
+    `;
+    
+    $('#aiReviewContent').html(content);
+}
+
+function displayAIReviewError(error) {
+    const content = `
+        <div class="alert alert-danger" role="alert">
+            <h6><i class="fas fa-exclamation-triangle me-2"></i>AI Review Failed</h6>
+            <p class="mb-0">${error}</p>
+            <hr>
+            <small class="text-muted">Please try again later or contact support if the issue persists.</small>
+        </div>
+    `;
+    
+    $('#aiReviewContent').html(content);
+}
+</script>
+<input type="hidden" id="selectedWorkItemId" value="">
+{% endblock %}

@@ -1,0 +1,12 @@
+openai
+requests_toolbelt
+requests
+flask
+pyodbc
+pandas
+openpyxl
+fastmcp
+uvicorn
+asgiref
+pywin32
+aiohttp
