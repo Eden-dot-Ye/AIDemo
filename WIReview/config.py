@@ -3,7 +3,7 @@ DB_USERNAME = 'Eden'
 DB_NAME = 'OdysseyWIReview'
 DB_PASSWORD = 'a46513'
 
-DEEPSEEK_API_KEY = 'sk-311533ffaf944e43a96f1225977e72b8'
+DEEPSEEK_API_KEY = '<api-key>'
 DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions'
 
 def get_deepseek_headers():
